@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Booklio — Dashboard</title>
+<style>
+  :root{
+    --bg:#F3F5FA; --bg-2:#FFFFFF; --ink:#141826; --soft:#525A70; --faint:#8A90A3;
+    --line:rgba(20,24,40,.12); --line-2:rgba(20,24,40,.06);
+    --accent:#FF9F43; --accent-2:#F5891F; --accent-ink:#211200; --accent-text:#B4610C;
+    --good:#1E9E63; --bad:#D64550;
+    --night:#0A0C16; --night-2:#12162A; --night-ink:#ECEEF6; --night-soft:#A6ABBE; --night-line:rgba(255,255,255,.1);
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono","Segoe UI Mono",monospace;
+    --r:14px;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#080A12;--bg-2:#10131F;--ink:#ECEEF6;--soft:#A6ABBE;--faint:#6E7488;
+      --line:rgba(255,255,255,.12);--line-2:rgba(255,255,255,.06);
+      --accent:#FFB25E;--accent-2:#FF9F43;--accent-text:#FFC489;--good:#39D98A;--bad:#F0788A;}
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;margin:0}
+  a{color:var(--accent-text)}
+  .brand{display:inline-flex;align-items:center;gap:.5em;font-family:var(--serif);
+    font-weight:600;font-size:1.3rem}
+  .brand svg{filter:drop-shadow(0 0 6px var(--accent))}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;
+    font-family:var(--sans);font-size:.95rem;font-weight:600;padding:.7em 1.3em;
+    border-radius:999px;border:1px solid transparent;cursor:pointer;transition:.18s}
+  .btn-primary{background:var(--accent);color:var(--accent-ink)}
+  .btn-primary:hover{transform:translateY(-1px)}
+  .btn-primary:disabled{opacity:.6;cursor:default;transform:none}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn-ghost:hover{border-color:var(--faint)}
+  .btn-sm{padding:.45em .8em;font-size:.85rem}
+  input,select{font-family:var(--sans);font-size:.95rem;color:var(--ink);
+    background:var(--bg-2);border:1px solid var(--line);border-radius:10px;
+    padding:.65em .85em;width:100%;outline:none;transition:border-color .2s}
+  input:focus,select:focus{border-color:var(--accent)}
+  label{display:block;font-size:.8rem;color:var(--soft);margin:0 0 .35em;font-weight:600}
+  .msg{font-size:.9rem;padding:.6em .9em;border-radius:10px;margin-top:.8rem;display:none}
+  .msg.show{display:block}
+  .msg.err{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+  .msg.ok{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good)}
+
+  /* ===== AUTH ===== */
+  #auth{min-height:100vh;display:grid;place-items:center;padding:24px;
+    background:radial-gradient(90% 60% at 20% 0%,rgba(255,160,70,.10),transparent 55%),var(--bg)}
+  .auth-card{width:100%;max-width:400px;background:var(--bg-2);border:1px solid var(--line);
+    border-radius:20px;padding:34px 30px;box-shadow:0 30px 70px -30px rgba(20,24,40,.3)}
+  .auth-card .brand{margin-bottom:6px}
+  .auth-card h1{font-size:1.5rem;margin:.4rem 0 .2rem}
+  .auth-card .sub{color:var(--soft);font-size:.92rem;margin-bottom:22px}
+  .field{margin-bottom:14px}
+  .tabs{display:flex;gap:6px;margin-bottom:20px;background:var(--bg);border:1px solid var(--line-2);
+    border-radius:999px;padding:4px}
+  .tab{flex:1;text-align:center;padding:.5em;border-radius:999px;font-size:.9rem;font-weight:600;
+    color:var(--soft);cursor:pointer;transition:.15s}
+  .tab.on{background:var(--accent);color:var(--accent-ink)}
+
+  /* ===== DASHBOARD ===== */
+  #dash{display:none;min-height:100vh}
+  .topbar{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:14px;
+    padding:14px 22px;background:color-mix(in srgb,var(--bg) 88%,transparent);
+    backdrop-filter:blur(12px);border-bottom:1px solid var(--line-2)}
+  .topbar .who{margin-left:auto;text-align:right;font-size:.82rem;color:var(--soft);line-height:1.3}
+  .topbar .who b{color:var(--ink);font-weight:600}
+  .wrap{max-width:820px;margin:0 auto;padding:28px 22px 80px}
+  .card{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);
+    padding:24px 22px;margin-bottom:20px}
+  .card h2{font-size:1.25rem;margin-bottom:4px}
+  .card .hint{color:var(--soft);font-size:.88rem;margin-bottom:18px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:560px){.grid2{grid-template-columns:1fr}}
+  .svc-row{display:grid;grid-template-columns:1fr 90px 100px 40px;gap:8px;align-items:center;margin-bottom:8px}
+  .svc-row .x{border:1px solid var(--line);background:transparent;color:var(--faint);
+    border-radius:9px;height:100%;cursor:pointer;font-size:1.1rem}
+  .svc-row .x:hover{color:var(--bad);border-color:var(--bad)}
+  .svc-head{display:grid;grid-template-columns:1fr 90px 100px 40px;gap:8px;
+    font-size:.72rem;color:var(--faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+  @media(max-width:560px){.svc-row,.svc-head{grid-template-columns:1fr 70px 80px 36px}}
+  .save-bar{display:flex;align-items:center;gap:14px;margin-top:6px}
+  .empty{text-align:center;color:var(--faint);padding:34px 10px;border:1px dashed var(--line);
+    border-radius:12px;font-size:.92rem}
+  .bk{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line-2);
+    border-radius:11px;margin-bottom:8px}
+  .bk .badge{margin-left:auto;font-size:.75rem;font-weight:600;padding:.2em .7em;border-radius:999px;
+    background:color-mix(in srgb,var(--accent) 18%,transparent);color:var(--accent-text)}
+  .loading{opacity:.5;pointer-events:none}
+</style>
+</head>
+<body>
+
+<!-- ================= AUTH ================= -->
+<div id="auth">
+  <div class="auth-card">
+    <span class="brand">
+      <svg width="24" height="24" viewBox="0 0 26 26" fill="none"><path d="M4 12.5C4 7.8 7.9 4 12.9 4S22 7.8 22 12.5s-3.9 8.5-9.1 8.5c-1 0-2-.1-2.9-.4L5 22l1.2-3.7C4.8 16.8 4 14.8 4 12.5Z" stroke="currentColor" stroke-width="1.6"/><circle cx="13" cy="12.5" r="3.1" fill="var(--accent)"/></svg>
+      Booklio
+    </span>
+    <h1 id="auth-title">Welcome back</h1>
+    <p class="sub" id="auth-sub">Log in to manage your bookings.</p>
+    <div class="tabs">
+      <div class="tab on" id="tab-login">Log in</div>
+      <div class="tab" id="tab-signup">Sign up</div>
+    </div>
+    <form id="auth-form">
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" required autocomplete="email" placeholder="you@business.com">
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" required minlength="6" autocomplete="current-password" placeholder="At least 6 characters">
+      </div>
+      <button class="btn btn-primary" type="submit" id="auth-submit" style="width:100%;margin-top:6px">Log in</button>
+      <div class="msg err" id="auth-msg"></div>
+    </form>
+  </div>
+</div>
+
+<!-- ================= DASHBOARD ================= -->
+<div id="dash">
+  <div class="topbar">
+    <span class="brand">
+      <svg width="22" height="22" viewBox="0 0 26 26" fill="none"><path d="M4 12.5C4 7.8 7.9 4 12.9 4S22 7.8 22 12.5s-3.9 8.5-9.1 8.5c-1 0-2-.1-2.9-.4L5 22l1.2-3.7C4.8 16.8 4 14.8 4 12.5Z" stroke="currentColor" stroke-width="1.6"/><circle cx="13" cy="12.5" r="3.1" fill="var(--accent)"/></svg>
+      Booklio
+    </span>
+    <div class="who"><b id="biz-label">Your business</b><br><span id="user-email"></span></div>
+    <button class="btn btn-ghost btn-sm" id="logout">Log out</button>
+  </div>
+
+  <div class="wrap">
+    <!-- Business profile -->
+    <div class="card">
+      <h2>Your business</h2>
+      <p class="hint">Booklio uses this to answer clients and take bookings.</p>
+      <div class="grid2">
+        <div class="field"><label>Business name</label><input id="biz-name" placeholder="e.g. Glow Studio"></div>
+        <div class="field"><label>Type</label>
+          <select id="biz-type">
+            <option>Salon</option><option>Barber</option><option>Spa / Nails</option>
+            <option>Clinic</option><option>Tutor</option><option>Gym / Fitness</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Opening hours</label><input id="biz-hours" placeholder="e.g. 10:00–19:00, Mon–Sat"></div>
+    </div>
+
+    <!-- Services -->
+    <div class="card">
+      <h2>Services</h2>
+      <p class="hint">What clients can book, with how long it takes and the price.</p>
+      <div class="svc-head"><span>Service</span><span>Minutes</span><span>Price (₹)</span><span></span></div>
+      <div id="svc-list"></div>
+      <button class="btn btn-ghost btn-sm" id="add-svc" style="margin-top:6px">+ Add service</button>
+    </div>
+
+    <div class="save-bar">
+      <button class="btn btn-primary" id="save">Save changes</button>
+      <span class="msg ok" id="save-msg" style="margin:0"></span>
+    </div>
+
+    <!-- Bookings -->
+    <div class="card" style="margin-top:28px">
+      <h2>Bookings</h2>
+      <p class="hint">Every appointment Booklio takes shows up here.</p>
+      <div id="bk-list"><div class="empty">No bookings yet — they'll appear here once Booklio is live on your WhatsApp.</div></div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getAuth, onAuthStateChanged, createUserWithEmailAndPassword,
+           signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc, collection, getDocs, query, orderBy }
+           from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAMfhO_mXM-5TJnoQ6CLWRd88Sl1Lsoph4",
+    authDomain: "booklio7.firebaseapp.com",
+    projectId: "booklio7",
+    storageBucket: "booklio7.firebasestorage.app",
+    messagingSenderId: "367618477854",
+    appId: "1:367618477854:web:03033493f9e25b57c9c30f"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const $ = (id) => document.getElementById(id);
+  let mode = "login";
+
+  // ---- auth tabs ----
+  function setMode(m){
+    mode = m;
+    $("tab-login").classList.toggle("on", m === "login");
+    $("tab-signup").classList.toggle("on", m === "signup");
+    $("auth-title").textContent = m === "login" ? "Welcome back" : "Create your account";
+    $("auth-sub").textContent = m === "login" ? "Log in to manage your bookings." : "Set up Booklio for your business.";
+    $("auth-submit").textContent = m === "login" ? "Log in" : "Create account";
+    $("password").autocomplete = m === "login" ? "current-password" : "new-password";
+    hide($("auth-msg"));
+  }
+  $("tab-login").onclick = () => setMode("login");
+  $("tab-signup").onclick = () => setMode("signup");
+
+  function show(el, text, cls){ el.textContent = text; el.className = "msg " + (cls||"err") + " show"; }
+  function hide(el){ el.classList.remove("show"); }
+
+  function authError(code){
+    const m = {
+      "auth/invalid-email":"That doesn't look like a valid email.",
+      "auth/missing-password":"Please enter a password.",
+      "auth/weak-password":"Password should be at least 6 characters.",
+      "auth/email-already-in-use":"That email already has an account — try logging in.",
+      "auth/invalid-credential":"Wrong email or password.",
+      "auth/wrong-password":"Wrong password.",
+      "auth/user-not-found":"No account with that email — try signing up.",
+      "auth/too-many-requests":"Too many attempts. Wait a minute and try again.",
+      "auth/network-request-failed":"Network error — check your connection."
+    };
+    return m[code] || ("Something went wrong (" + code + ").");
+  }
+
+  $("auth-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    hide($("auth-msg"));
+    const email = $("email").value.trim(), pw = $("password").value;
+    const btn = $("auth-submit"); btn.disabled = true;
+    try {
+      if (mode === "login") await signInWithEmailAndPassword(auth, email, pw);
+      else await createUserWithEmailAndPassword(auth, email, pw);
+    } catch (err) {
+      show($("auth-msg"), authError(err.code), "err");
+    } finally { btn.disabled = false; }
+  });
+
+  $("logout").onclick = () => signOut(auth);
+
+  // ---- services editor ----
+  function svcRow(s = {name:"",dur:"",price:""}){
+    const row = document.createElement("div");
+    row.className = "svc-row";
+    row.innerHTML =
+      '<input class="s-name" placeholder="Haircut" value="'+esc(s.name)+'">' +
+      '<input class="s-dur" type="number" min="5" step="5" placeholder="30" value="'+esc(s.dur)+'">' +
+      '<input class="s-price" type="number" min="0" step="10" placeholder="300" value="'+esc(s.price)+'">' +
+      '<button class="x" title="Remove" type="button">×</button>';
+    row.querySelector(".x").onclick = () => row.remove();
+    return row;
+  }
+  function esc(v){ return String(v==null?"":v).replace(/"/g,"&quot;"); }
+  $("add-svc").onclick = () => $("svc-list").appendChild(svcRow());
+
+  function readServices(){
+    return [...document.querySelectorAll(".svc-row")].map(r => ({
+      name: r.querySelector(".s-name").value.trim(),
+      dur: Number(r.querySelector(".s-dur").value) || 0,
+      price: Number(r.querySelector(".s-price").value) || 0
+    })).filter(s => s.name);
+  }
+
+  // ---- load / save business ----
+  async function loadBusiness(uid){
+    const snap = await getDoc(doc(db, "businesses", uid));
+    const d = snap.exists() ? snap.data() : {};
+    $("biz-name").value = d.name || "";
+    $("biz-type").value = d.type || "Salon";
+    $("biz-hours").value = d.hours || "10:00–19:00, Mon–Sat";
+    $("biz-label").textContent = d.name || "Your business";
+    $("svc-list").innerHTML = "";
+    const svcs = (d.services && d.services.length) ? d.services : [{name:"",dur:"",price:""}];
+    svcs.forEach(s => $("svc-list").appendChild(svcRow(s)));
+    loadBookings(uid);
+  }
+
+  $("save").onclick = async () => {
+    const uid = auth.currentUser && auth.currentUser.uid;
+    if (!uid) return;
+    const btn = $("save"); btn.disabled = true; btn.textContent = "Saving…";
+    try {
+      const data = {
+        name: $("biz-name").value.trim(),
+        type: $("biz-type").value,
+        hours: $("biz-hours").value.trim(),
+        services: readServices(),
+        updatedAt: Date.now()
+      };
+      await setDoc(doc(db, "businesses", uid), data, { merge: true });
+      $("biz-label").textContent = data.name || "Your business";
+      show($("save-msg"), "Saved ✓", "ok");
+      setTimeout(() => hide($("save-msg")), 2500);
+    } catch (err) {
+      show($("save-msg"), "Couldn't save: " + (err.code || err.message), "err");
+    } finally { btn.disabled = false; btn.textContent = "Save changes"; }
+  };
+
+  async function loadBookings(uid){
+    try {
+      const q = query(collection(db, "businesses", uid, "bookings"), orderBy("createdAt", "desc"));
+      const snap = await getDocs(q);
+      if (snap.empty) return;
+      const list = $("bk-list"); list.innerHTML = "";
+      snap.forEach(docSnap => {
+        const b = docSnap.data();
+        const el = document.createElement("div");
+        el.className = "bk";
+        el.innerHTML = '<div><b>'+esc(b.customer||"Client")+'</b><br><span style="color:var(--soft);font-size:.85rem">'+
+          esc(b.service||"")+' · '+esc(b.day||"")+' '+esc(b.time||"")+'</span></div>' +
+          '<span class="badge">'+esc(b.status||"booked")+'</span>';
+        list.appendChild(el);
+      });
+    } catch (err) { /* no bookings collection yet is fine */ }
+  }
+
+  // ---- auth state ----
+  onAuthStateChanged(auth, (user) => {
+    if (user){
+      $("auth").style.display = "none";
+      $("dash").style.display = "block";
+      $("user-email").textContent = user.email;
+      loadBusiness(user.uid);
+    } else {
+      $("dash").style.display = "none";
+      $("auth").style.display = "grid";
+      $("auth-form").reset();
+      setMode("login");
+    }
+  });
+</script>
+</body>
+</html>
