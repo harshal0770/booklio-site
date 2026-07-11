@@ -173,6 +173,14 @@
   .wl-for{margin-top:.9rem;font-size:var(--s-1);color:var(--night-soft);opacity:.85;max-width:34rem}
   .wl-success{margin-top:2.1rem;display:inline-flex;align-items:center;gap:.6em;color:var(--accent-text);
     font-weight:600;font-size:var(--s1)}
+  .wl-done{margin-top:2.1rem;max-width:34rem}
+  .wl-done .wl-success{margin-top:0}
+  .wl-sharep{margin-top:1rem;font-size:var(--s-1);color:var(--night-soft);line-height:1.5}
+  .wl-share{display:flex;gap:.6rem;margin-top:1rem;flex-wrap:wrap}
+  .wl-sbtn{font-size:var(--s-1);font-weight:600;padding:.7em 1.15em;border-radius:999px;cursor:pointer;
+    border:1px solid var(--night-line);background:var(--night-glass);color:var(--night-ink);transition:.18s}
+  .wl-sbtn:hover{transform:translateY(-2px);border-color:var(--night-soft)}
+  .wl-sbtn.wa{background:var(--wa-green);color:#04120c;border-color:transparent}
   .trust{display:flex;gap:1.3rem;flex-wrap:wrap;margin-top:2.1rem;
     font-size:var(--s-1);color:var(--night-soft)}
   .trust span{display:inline-flex;align-items:center;gap:.5em}
@@ -390,7 +398,7 @@
     <nav class="nav-links">
       <a href="#how">How it works</a>
       <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
+      <a href="#pricing">Offer</a>
       <a href="#faq">FAQ</a>
     </nav>
     <div class="nav-cta">
@@ -433,7 +441,7 @@
               <span class="wa-back">‹</span>
               <div class="wa-av">B</div>
               <div>
-                <div class="wa-name">Booklio · Fox &amp; Blade Barbers</div>
+                <div class="wa-name">Booklio · your AI receptionist</div>
                 <div class="wa-status"><b>online</b> · replies instantly</div>
               </div>
               <div class="wa-icons">
@@ -553,78 +561,41 @@
   <section class="band price-wrap" id="pricing">
     <div class="wrap">
       <div class="sec-head reveal">
-        <span class="eyebrow">Pricing</span>
-        <h2>Costs less than one missed booking a month.</h2>
-        <p>14 days free. No card to start. Prices shown in USD — billed in your local currency at checkout.</p>
+        <span class="eyebrow">Founding offer</span>
+        <h2>$1 for your first 14 days.</h2>
+        <p>Try Booklio for a single dollar. If it doesn't fill your calendar, walk away — no games. After launch, plans start at $19/mo; founding members lock in a lower rate, for good.</p>
       </div>
-      <div class="prices">
-        <div class="plan reveal">
-          <div class="pname">Solo</div>
-          <div class="pfor">One chair, one person.</div>
-          <div class="cost"><span class="amt">$19</span><span class="per">/ month</span></div>
-          <ul>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> 1 calendar, unlimited bookings</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> 24/7 answering &amp; reminders</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> Works on your WhatsApp number</li>
-          </ul>
-          <a class="btn btn-ghost" href="#wl-final">Join waitlist</a>
-        </div>
-        <div class="plan pop reveal">
-          <div class="pname">Studio</div>
-          <div class="pfor">Small teams &amp; salons.</div>
-          <div class="cost"><span class="amt">$39</span><span class="per">/ month</span></div>
-          <ul>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> Up to 5 staff calendars</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> Deposits &amp; payment links</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> 90+ languages &amp; analytics</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> Custom voice &amp; booking rules</li>
-          </ul>
-          <a class="btn btn-primary" href="#wl-final">Join waitlist</a>
-        </div>
-        <div class="plan reveal">
-          <div class="pname">Team</div>
-          <div class="pfor">Multi-location businesses.</div>
-          <div class="cost"><span class="amt">$89</span><span class="per">/ month</span></div>
-          <ul>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> Unlimited staff &amp; locations</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> Priority support</li>
-            <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> API &amp; integrations</li>
-          </ul>
-          <a class="btn btn-ghost" href="#wl-final">Join waitlist</a>
-        </div>
+      <div style="text-align:center;margin-top:8px">
+        <a class="btn btn-primary btn-lg" href="#wl-hero">Join the waitlist — lock the $1 offer</a>
+        <p style="color:var(--ink-soft);font-size:var(--s-1);margin-top:1.1rem">Solo, Studio &amp; Team plans from $19–$89/mo after your trial. Cancel anytime.</p>
       </div>
     </div>
   </section>
 
-  <!-- TESTIMONIALS -->
+  <!-- FOUNDING MEMBERS -->
   <section class="band tight">
     <div class="wrap">
       <div class="sec-head reveal">
-        <span class="eyebrow">Owners who stopped losing bookings</span>
-        <h2>The chair fills itself now.</h2>
+        <span class="eyebrow">Founding members</span>
+        <h2>Get in early. Get looked after.</h2>
+        <p>The first businesses on board don't just get a head start — they get treated like founders.</p>
       </div>
-      <div class="quotes">
-        <figure class="quote reveal" style="margin:0">
-          <div class="msg-b">"I used to lose 3–4 clients a week to missed messages. First month with Booklio I booked 22 appointments I'd never have seen — all after 8pm."</div>
-          <figcaption class="who">
-            <div class="qav" style="background:#C0562B">A</div>
-            <div><div class="qn">Amir K.</div><div class="qr">Barber · Manchester</div></div>
-          </figcaption>
-        </figure>
-        <figure class="quote reveal" style="margin:0">
-          <div class="msg-b">"My clients message in three languages. Booklio replies to each one perfectly. It genuinely feels like I hired a receptionist for the price of a coffee."</div>
-          <figcaption class="who">
-            <div class="qav" style="background:#3B6E4F">S</div>
-            <div><div class="qn">Sofia M.</div><div class="qr">Nail studio · Lisbon</div></div>
-          </figcaption>
-        </figure>
-        <figure class="quote reveal" style="margin:0">
-          <div class="msg-b">"No-shows dropped by half because of the reminders. I set it up on a Sunday night and it's been running itself ever since."</div>
-          <figcaption class="who">
-            <div class="qav" style="background:#3D5AA8">D</div>
-            <div><div class="qn">Deepak R.</div><div class="qr">Physio clinic · Pune</div></div>
-          </figcaption>
-        </figure>
+      <div class="steps">
+        <div class="step reveal">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+          <h3>$1 founding price</h3>
+          <p>Start for a dollar and lock in a founder rate that never rises — even when everyone else's does.</p>
+        </div>
+        <div class="step reveal">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg></div>
+          <h3>Priority support</h3>
+          <p>A direct line to the founder. Your setup and your questions jump to the front of the line.</p>
+        </div>
+        <div class="step reveal">
+          <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></div>
+          <h3>Shape what we build</h3>
+          <p>Tell us what you need next — founding members' requests jump the queue.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -698,7 +669,7 @@
           <h4>Product</h4>
           <a href="#how">How it works</a>
           <a href="#features">Features</a>
-          <a href="#pricing">Pricing</a>
+          <a href="#pricing">Offer</a>
         </div>
         <div class="foot-col">
           <h4>Company</h4>
@@ -784,13 +755,13 @@
   /* ---------- CHAT ANIMATION ---------- */
   var chat = document.getElementById('chat');
   var script = [
-    {who:'them', text:'Hi! Any chance of a skin fade tomorrow? 🙏', time:'11:47 PM'},
+    {who:'them', text:'Hi! Can I book an appointment for tomorrow afternoon?', time:'11:47 PM'},
     {typing:900},
-    {who:'me', text:"Hey! 😊 Yes — I've got 10:30, 1:00 and 4:15 open tomorrow. Which suits you?", time:'11:47 PM'},
-    {who:'them', text:'1pm is perfect', time:'11:48 PM'},
+    {who:'me', text:"Hi! 😊 Of course — I've got 1:00, 2:30 and 4:15 free tomorrow afternoon. Which suits you?", time:'11:47 PM'},
+    {who:'them', text:'2:30 works great', time:'11:48 PM'},
     {typing:800},
-    {who:'me', text:"Booked you in for 1:00 PM tomorrow, Thursday, with Marco. I'll send a reminder in the morning — see you then! ✂️", time:'11:48 PM'},
-    {sys:'Added to calendar · Thu 1:00 PM'}
+    {who:'me', text:"Perfect — you're booked for 2:30 PM tomorrow. I'll send a reminder in the morning. See you then! 🎉", time:'11:48 PM'},
+    {sys:'Added to calendar · Tomorrow 2:30 PM'}
   ];
 
   function bubble(m){
@@ -918,7 +889,7 @@
   // To collect real emails: create a FREE form at https://formspree.io (2 min),
   // then paste its endpoint URL below (it looks like https://formspree.io/f/abcd1234).
   // Until you set it, the form shows a thank-you but does NOT store emails.
-  var WAITLIST_ENDPOINT = ""; // <-- paste your Formspree URL here
+  var WAITLIST_ENDPOINT = "https://formspree.io/f/xrewnwde"; // Booklio waitlist
 
   function wire(form, noteId){
     if(!form) return;
@@ -928,12 +899,20 @@
       var email = (input.value || "").trim();
       if(email.indexOf("@") < 1){ input.focus(); input.style.borderColor = "#F0455B"; return; }
       function done(){
-        var ok = document.createElement("div");
-        ok.className = "wl-success";
-        ok.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> You’re on the list — we’ll message you at launch!';
-        form.replaceWith(ok);
-        var note = noteId && document.getElementById(noteId);
-        if(note) note.remove();
+        var box = document.createElement("div"); box.className = "wl-done";
+        var url = "https://harshal0770.github.io/booklio-site/";
+        var msg = "I just joined the waitlist for Booklio — an AI receptionist that books your clients on WhatsApp 24/7, so you never miss a booking again. Worth a look 👉 " + url;
+        box.innerHTML =
+          '<div class="wl-success"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6 9 17l-5-5"/></svg> You’re on the list!</div>' +
+          '<p class="wl-sharep">Know a shop owner who keeps missing bookings? Send them Booklio — help them out, and help us launch faster:</p>' +
+          '<div class="wl-share">' +
+            '<a class="wl-sbtn wa" target="_blank" rel="noopener" href="https://wa.me/?text=' + encodeURIComponent(msg) + '">Share on WhatsApp</a>' +
+            '<button type="button" class="wl-sbtn copy">Copy link</button>' +
+          '</div>';
+        form.replaceWith(box);
+        var note = noteId && document.getElementById(noteId); if(note) note.remove();
+        var cbtn = box.querySelector(".copy");
+        cbtn.addEventListener("click", function(){ if(navigator.clipboard) navigator.clipboard.writeText(url); cbtn.textContent = "Copied ✓"; });
       }
       if(WAITLIST_ENDPOINT){
         fetch(WAITLIST_ENDPOINT, {
